@@ -30,9 +30,10 @@ export interface StepItem {
 }
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "FEATURES", href: "#features" },
-  { label: "HOW IT WORKS", href: "#how-it-works" },
-  { label: "FAQ", href: "#faq" },
+  { label: "FEATURES", href: "/#features" },
+  { label: "FIND PAST CASES", href: "/precedents" },
+  { label: "HOW IT WORKS", href: "/#how-it-works" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 export const TRUST_COURTS = [
@@ -323,9 +324,9 @@ export const FOOTER_CONTENT = {
   tagline: "Translating court documents into plain English everyone can understand.",
   productLinks: [
     { label: "Analyze Document", href: "/analyze" },
-    { label: "Features", href: "#features" },
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Supported Courts", href: "#" },
+    { label: "Find Past Cases & Precedents", href: "/precedents" },
+    { label: "Features", href: "/#features" },
+    { label: "How It Works", href: "/#how-it-works" },
   ],
   resourceLinks: [
     { label: "FAQ", href: "#faq" },

@@ -8,10 +8,12 @@ import {
   Printer,
   Check,
   Sparkles,
+  Brain,
 } from "lucide-react";
 import type { NyayaAIOutput } from "@/types/type";
 import type { LegalReport } from "@/lib/types";
 import { mapNyayaToLegalReport } from "@/lib/mock";
+import { compareReadability } from "@/lib/ml";
 import { Tabs, type TabItem } from "@/components/ui/Tabs";
 import { OutlinePillButton } from "@/components/ui/OutlinePillButton";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
@@ -27,6 +29,8 @@ import { LegalLinksCard } from "./LegalLinksCard";
 import { UncertaintiesCard } from "./UncertaintiesCard";
 import { LegalDisclaimerCard } from "./LegalDisclaimerCard";
 import { OriginalTextCard } from "./OriginalTextCard";
+import { ActsImposedAndRemediesCard } from "./ActsImposedAndRemediesCard";
+import { SimilarPrecedentsCard } from "./SimilarPrecedentsCard";
 import { BrushBackdrop } from "@/components/brush";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +45,8 @@ export interface LegalReportDashboardProps {
 const REPORT_TABS: readonly TabItem[] = [
   { id: "all", label: "Full Report" },
   { id: "decision", label: "Decision & Orders" },
+  { id: "acts", label: "Acts & Remedies" },
+  { id: "precedents", label: "Similar Cases" },
   { id: "timeline", label: "Timeline & Parties" },
   { id: "law", label: "Laws & Next Steps" },
   { id: "original", label: "Original Text" },
@@ -55,6 +61,9 @@ export function LegalReportDashboard({
 }: LegalReportDashboardProps) {
   // Resolve report contract
   const report: LegalReport = explicitReport || (data ? mapNyayaToLegalReport(data, originalText) : ({} as LegalReport));
+
+  // Compute NLP Readability Benchmark
+  const readability = compareReadability(report.originalText || "Legal document text", report.executiveSummary || "");
 
   // Tab state synced with URL hash
   const [activeTab, setActiveTab] = useState<string>("all");
@@ -200,6 +209,16 @@ ${(report.nextSteps || []).map((s) => `• ${s.action} (${s.date || "Upcoming"})
             <p className="text-xs sm:text-sm text-[#5B6661] mt-1">
               Plain English explanation of rights, rulings, timeline, and statutory provisions
             </p>
+
+            <div className="flex flex-wrap items-center gap-2 mt-2.5">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 border border-purple-200 px-3 py-1 text-[11px] font-semibold text-purple-900">
+                <Brain className="h-3.5 w-3.5 text-purple-600" />
+                NLP Complexity: Grade {readability.original.fleschKincaidGrade} (Legal) → Grade {readability.simplified.fleschKincaidGrade} (Citizen)
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-[11px] font-bold text-emerald-800">
+                ↓ {readability.complexityReductionPercent}% Complexity Drop
+              </span>
+            </div>
           </div>
 
           {/* Three Action Buttons with 60ms stagger slide-in from right */}
@@ -270,22 +289,38 @@ ${(report.nextSteps || []).map((s) => `• ${s.action} (${s.date || "Upcoming"})
             background={report.background}
           />
 
-          {/* 4. Actionable Next Steps */}
+          {/* 4. Statutory Acts Breakdown: Imposed vs. Counter-Remedies */}
+          {(report.actsImposed?.length || report.actsCanImpose?.length) ? (
+            <ActsImposedAndRemediesCard
+              actsImposed={report.actsImposed}
+              actsCanImpose={report.actsCanImpose}
+            />
+          ) : null}
+
+          {/* 5. Previous Years' Similar Cases & Precedents */}
+          {report.similarCases && report.similarCases.length > 0 && (
+            <SimilarPrecedentsCard
+              initialCases={report.similarCases}
+              defaultQuery={report.identification?.caseTitle || "demolition notice"}
+            />
+          )}
+
+          {/* 6. Actionable Next Steps */}
           {report.nextSteps?.length > 0 && (
             <NextStepsCard nextSteps={report.nextSteps} />
           )}
 
-          {/* 5. Important Facts & Figures */}
+          {/* 7. Important Facts & Figures */}
           {report.facts?.length > 0 && (
             <ImportantDetailsCard facts={report.facts} />
           )}
 
-          {/* 6. Chronological Timeline */}
+          {/* 8. Chronological Timeline */}
           {report.timeline?.length > 0 && (
             <TimelineCard timeline={report.timeline} />
           )}
 
-          {/* 7. Parties and Arguments */}
+          {/* 9. Parties and Arguments */}
           {report.parties?.length > 0 && (
             <PartiesAndArgumentsCard
               reportParties={report.parties}
@@ -293,7 +328,7 @@ ${(report.nextSteps || []).map((s) => `• ${s.action} (${s.date || "Upcoming"})
             />
           )}
 
-          {/* 8. Legal References & Statutory Acts */}
+          {/* 10. Legal References & Statutory Acts */}
           {report.laws?.length > 0 && (
             <LegalReferencesCard
               laws={report.laws}
@@ -301,17 +336,17 @@ ${(report.nextSteps || []).map((s) => `• ${s.action} (${s.date || "Upcoming"})
             />
           )}
 
-          {/* 9. Citations & Official Links */}
+          {/* 11. Citations & Official Links */}
           {data?.legal_links && data.legal_links.length > 0 && (
             <LegalLinksCard links={data.legal_links} />
           )}
 
-          {/* 10. Uncertainties & Caveats */}
+          {/* 12. Uncertainties & Caveats */}
           {data?.uncertainties && data.uncertainties.length > 0 && (
             <UncertaintiesCard uncertainties={data.uncertainties} />
           )}
 
-          {/* 11. Disclaimer */}
+          {/* 13. Disclaimer */}
           <LegalDisclaimerCard disclaimer={data?.disclaimer} />
         </div>
       )}
@@ -324,6 +359,10 @@ ${(report.nextSteps || []).map((s) => `• ${s.action} (${s.date || "Upcoming"})
             directions={report.directions}
             conditions={report.conditions}
           />
+          <ActsImposedAndRemediesCard
+            actsImposed={report.actsImposed}
+            actsCanImpose={report.actsCanImpose}
+          />
           {report.nextSteps?.length > 0 && (
             <NextStepsCard nextSteps={report.nextSteps} />
           )}
@@ -334,6 +373,32 @@ ${(report.nextSteps || []).map((s) => `• ${s.action} (${s.date || "Upcoming"})
           {report.facts?.length > 0 && (
             <ImportantDetailsCard facts={report.facts} />
           )}
+          <LegalDisclaimerCard disclaimer={data?.disclaimer} />
+        </div>
+      )}
+
+      {activeTab === "acts" && (
+        <div className={panelAnimationClass} id="tab-panel-acts" role="tabpanel">
+          <ActsImposedAndRemediesCard
+            actsImposed={report.actsImposed}
+            actsCanImpose={report.actsCanImpose}
+          />
+          {report.laws?.length > 0 && (
+            <LegalReferencesCard
+              laws={report.laws}
+              onSelectSource={handleSelectSource}
+            />
+          )}
+          <LegalDisclaimerCard disclaimer={data?.disclaimer} />
+        </div>
+      )}
+
+      {activeTab === "precedents" && (
+        <div className={panelAnimationClass} id="tab-panel-precedents" role="tabpanel">
+          <SimilarPrecedentsCard
+            initialCases={report.similarCases}
+            defaultQuery={report.identification?.caseTitle || "demolition notice"}
+          />
           <LegalDisclaimerCard disclaimer={data?.disclaimer} />
         </div>
       )}
@@ -355,6 +420,10 @@ ${(report.nextSteps || []).map((s) => `• ${s.action} (${s.date || "Upcoming"})
 
       {activeTab === "law" && (
         <div className={panelAnimationClass} id="tab-panel-law" role="tabpanel">
+          <ActsImposedAndRemediesCard
+            actsImposed={report.actsImposed}
+            actsCanImpose={report.actsCanImpose}
+          />
           {report.laws?.length > 0 && (
             <LegalReferencesCard
               laws={report.laws}

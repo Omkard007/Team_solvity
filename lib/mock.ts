@@ -1,4 +1,4 @@
-import type { Level, SimplifyResult, LegalReport } from "./types";
+import type { Level, SimplifyResult, LegalReport, SimilarCase } from "./types";
 import type { NyayaAIOutput } from "@/types/type";
 import { NYAYA_AI_DISCLAIMER } from "@/types/type";
 import { countWords } from "./utils";
@@ -197,6 +197,130 @@ export const SAMPLE_LEGAL_REPORT: LegalReport = {
   ],
   originalText: ORIGINAL_COURT_DOCUMENT,
   isSample: true,
+  actsImposed: [
+    {
+      actName: "Maharashtra Regional and Town Planning Act, 1966 (MRTP)",
+      section: "Section 53(1)",
+      imposedBy: "Pune Municipal Corporation (Zone 4 Town Planning Officer)",
+      allegationOrClaim:
+        "Emergency demolition order issued alleging 12.4% excess FSI deviation beyond sanctioned limits on 11th & 12th floors.",
+      potentialPenalty: "Summary demolition within 48 hours without compensation.",
+      defenseAngle:
+        "Notice unlawfully compressed statutory 15 days to 48 hours, violating Audi Alteram Partem and depriving right of regularisation under Sec 53(3).",
+    },
+    {
+      actName: "Maharashtra Municipal Corporations Act, 1949 (MMC Act)",
+      section: "Section 260",
+      imposedBy: "Municipal Commissioner",
+      allegationOrClaim: "Summary removal of alleged unauthorized structure on ground of safety hazard.",
+      potentialPenalty: "Demolition and recovery of structural removal costs from property owner.",
+      defenseAngle:
+        "No imminent structural hazard established; revised plan under Unified DCPR 2020 pending approval since January 2023 without official rejection.",
+    },
+  ],
+  actsCanImpose: [
+    {
+      actName: "Constitution of India",
+      section: "Article 226 (High Court Writ Jurisdiction)",
+      reliefType: "Immediate Interim Stay on Demolition",
+      howToInvoke:
+        "File an urgent Civil Writ Petition before the High Court challenging the impugned notice as ultra vires and in violation of fundamental rights and principles of natural justice.",
+      whyItHelps:
+        "High Court will invoke its extraordinary writ power to freeze the demolition order and compel civic authorities to maintain status quo.",
+      prerequisites:
+        "Must demonstrate absence of the mandatory 15-day statutory notice and show ongoing revised plan application.",
+      strength: "High",
+    },
+    {
+      actName: "Maharashtra Regional and Town Planning Act, 1966 (MRTP)",
+      section: "Section 53(3) (Statutory Regularisation)",
+      reliefType: "Statutory Freeze Pending Regularisation",
+      howToInvoke:
+        "Submit a formal application for compounding and regularisation with architect's revised drawings under UDCPR Regulations.",
+      whyItHelps:
+        "Under Section 53(3), submitting a regularisation application automatically stays demolition action until the planning authority officially decides the compounding.",
+      prerequisites: "Must apply within the statutory notice period with prescribed compounding fees.",
+      strength: "High",
+    },
+    {
+      actName: "Code of Civil Procedure, 1908 (CPC)",
+      section: "Order 39 Rules 1 & 2",
+      reliefType: "Temporary Injunction & Status Quo Restraint",
+      howToInvoke:
+        "File an application for temporary injunction in court to restrain municipal officers from creating irreversible structural damage.",
+      whyItHelps:
+        "Protects property rights and third-party buyer interests while joint structural survey is conducted.",
+      prerequisites: "Petitioner must deposit security deposit (e.g., ₹25,00,000) as ordered by the court.",
+      strength: "Medium",
+    },
+    {
+      actName: "Right to Fair Administrative Procedure / Natural Justice Doctrine",
+      section: "Audi Alteram Partem",
+      reliefType: "Order for Joint Site Inspection & Fair Hearing",
+      howToInvoke:
+        "Cite the Full Bench precedent in Sopan Maruti Thopte v. PMC requiring joint structural measurements before coercive action.",
+      whyItHelps:
+        "Compels the municipal chief structural engineer and petitioner's architect to jointly verify measurements rather than unilateral civic inspection.",
+      prerequisites: "Provide sanctioned architectural drawings and structural audit report.",
+      strength: "Strategic",
+    },
+  ],
+  similarCases: [
+    {
+      id: "case-1",
+      title: "Sopan Maruti Thopte & Anr. v. Pune Municipal Corporation",
+      court: "High Court of Judicature at Bombay (Full Bench)",
+      year: 1996,
+      citation: "1996 (1) Mah LJ 473 / AIR 1996 Bom 127",
+      similarityScore: 98,
+      matchReason:
+        "Landmark Full Bench ruling directly binding on Pune Municipal Corporation for Section 53 demolition notices.",
+      bench: "Hon'ble Full Bench (3 Judges)",
+      keyRuling:
+        "The Bombay High Court laid down mandatory guidelines that municipal bodies cannot demolish structures without serving a minimum 15-day show-cause notice and must give another 15 days window to appeal before initiating demolition.",
+      howItHelpsYou:
+        "Directly strikes down the 48-hour PMC notice as illegal and contrary to binding Full Bench guidelines. Cite Paragraph 8 to obtain an immediate stay.",
+      outcome: "favorable",
+      relevantActs: ["Section 53 MRTP Act", "Section 260 MMC Act"],
+      url: "https://indiankanoon.org/doc/1449832/",
+    },
+    {
+      id: "case-2",
+      title: "Municipal Corporation of Greater Mumbai v. Sunbeam High Tech Developers Pvt. Ltd.",
+      court: "Supreme Court of India",
+      year: 2019,
+      citation: "(2019) 20 SCC 641",
+      similarityScore: 94,
+      matchReason:
+        "Demolition executed with undue haste without verifying sanctioned regularisation applications.",
+      bench: "Hon'ble Supreme Court of India",
+      keyRuling:
+        "The Supreme Court held that authorities must not act precipitously. If civic officers execute demolition without giving fair statutory opportunity, the officers can be held personally accountable for compensatory damages.",
+      howItHelpsYou:
+        "Places strong legal deterrence against civic officers, forcing them to participate in joint measurements before taking any physical steps.",
+      outcome: "favorable",
+      relevantActs: ["Article 226 Constitution", "Section 53 MRTP Act"],
+      url: "https://indiankanoon.org/doc/8123945/",
+    },
+    {
+      id: "case-3",
+      title: "Makarand Deshpande v. State of Maharashtra & Pune Municipal Corp.",
+      court: "High Court of Judicature at Bombay",
+      year: 2021,
+      citation: "2021 SCC OnLine Bom 3120",
+      similarityScore: 89,
+      matchReason:
+        "Disputed FSI deviations where revised plans under UDCPR 2020 were pending municipal scrutiny.",
+      bench: "Hon'ble Bombay High Court",
+      keyRuling:
+        "Where an owner has submitted revised building plans under UDCPR, municipal authorities must formally dispose of the compounding representation before issuing coercive demolition notices.",
+      howItHelpsYou:
+        "Protects the 11th & 12th floors while the January 2023 revised sanctioned plan is processed by the Town Planning Department.",
+      outcome: "favorable",
+      relevantActs: ["UDCPR Regulations", "Section 53(3) MRTP Act"],
+      url: "https://indiankanoon.org/doc/1638201/",
+    },
+  ],
 };
 
 export const SAMPLE_NYAYA_AI_OUTPUT: NyayaAIOutput = {
@@ -370,7 +494,140 @@ export function mapNyayaToLegalReport(data: any, originalText?: string): LegalRe
     })),
     originalText: originalText || ORIGINAL_COURT_DOCUMENT,
     isSample: Boolean(data?.isSample),
+    actsImposed: SAMPLE_LEGAL_REPORT.actsImposed,
+    actsCanImpose: SAMPLE_LEGAL_REPORT.actsCanImpose,
+    similarCases: SAMPLE_LEGAL_REPORT.similarCases,
   };
+}
+
+export const INDIAN_PRECEDENT_DATABASE: SimilarCase[] = [
+  ...SAMPLE_LEGAL_REPORT.similarCases!,
+  {
+    id: "case-4",
+    title: "Dashrath Rupsingh Rathod v. State of Maharashtra & Anr.",
+    court: "Supreme Court of India",
+    year: 2014,
+    citation: "(2014) 9 SCC 129",
+    similarityScore: 95,
+    matchReason: "Jurisdiction of court in Cheque Dishonour complaints under Section 138 Negotiable Instruments Act.",
+    bench: "Hon'ble Supreme Court (3-Judge Bench)",
+    keyRuling: "The Supreme Court clarified where a cheque bounce complaint must be instituted, preventing harassment of accused in distant remote jurisdictions.",
+    howItHelpsYou: "Can be used to seek transfer or dismissal of Section 138 complaints filed in improper territorial courts.",
+    outcome: "favorable",
+    relevantActs: ["Section 138 Negotiable Instruments Act", "Section 142 NI Act"],
+    url: "https://indiankanoon.org/doc/157293810/",
+  },
+  {
+    id: "case-5",
+    title: "Rohitbhai Jivanlal Patel v. State of Gujarat",
+    court: "Supreme Court of India",
+    year: 2019,
+    citation: "(2019) 18 SCC 106",
+    similarityScore: 91,
+    matchReason: "Rebuttal of statutory presumption under Section 139 of the Negotiable Instruments Act.",
+    bench: "Hon'ble Supreme Court of India",
+    keyRuling: "The court held that once execution of cheque is admitted, the accused must raise a probable defense based on preponderance of probabilities rather than proof beyond reasonable doubt.",
+    howItHelpsYou: "Provides standard of proof needed to discharge burden without stepping into witness box.",
+    outcome: "favorable",
+    relevantActs: ["Section 139 NI Act", "Evidence Act 1872"],
+    url: "https://indiankanoon.org/doc/1388902/",
+  },
+  {
+    id: "case-6",
+    title: "Arnesh Kumar v. State of Bihar & Anr.",
+    court: "Supreme Court of India",
+    year: 2014,
+    citation: "(2014) 8 SCC 273",
+    similarityScore: 96,
+    matchReason: "Mandatory guidelines preventing routine or mechanical arrest in offenses punishable up to 7 years.",
+    bench: "Hon'ble Supreme Court of India",
+    keyRuling: "Police officers cannot arrest accused automatically without satisfying Section 41 CrPC checklist. Mandatory notice under Section 41A must be served first.",
+    howItHelpsYou: "Protects against sudden arbitrary police arrest. If police violate Arnesh Kumar directions, officers face contempt of court and departmental action.",
+    outcome: "favorable",
+    relevantActs: ["Section 41 & 41A CrPC", "Section 498A IPC", "Article 21 Constitution"],
+    url: "https://indiankanoon.org/doc/298262/",
+  },
+  {
+    id: "case-7",
+    title: "Satender Kumar Antil v. Central Bureau of Investigation",
+    court: "Supreme Court of India",
+    year: 2022,
+    citation: "(2022) 10 SCC 51",
+    similarityScore: 94,
+    matchReason: "Categorization of offenses and strict guidelines for grant of anticipatory and regular bail.",
+    bench: "Hon'ble Supreme Court of India",
+    keyRuling: "Bail applications must strictly be decided within 2 weeks. Economic and minor offenses should not lead to custodial detention when accused cooperated with summons.",
+    howItHelpsYou: "Precedent to secure prompt bail without jail detention upon appearance before magistrate.",
+    outcome: "favorable",
+    relevantActs: ["Section 437 & 439 CrPC", "Article 21 Constitution"],
+    url: "https://indiankanoon.org/doc/1712542/",
+  },
+  {
+    id: "case-8",
+    title: "Pioneer Urban Land & Infrastructure Ltd. v. Govindan Raghavan",
+    court: "Supreme Court of India",
+    year: 2019,
+    citation: "(2019) 5 SCC 725",
+    similarityScore: 96,
+    matchReason: "One-sided flat buyer builder agreements and unreasonable delay in possession.",
+    bench: "Hon'ble Supreme Court of India",
+    keyRuling: "A homebuyer cannot be compelled to wait indefinitely for possession. One-sided clauses in builder contracts constitute Unfair Trade Practice, entitling full refund with interest.",
+    howItHelpsYou: "Entitles buyer to demand immediate 100% refund with 9-12% interest and compensation against defaulting developers under RERA and Consumer Protection Act.",
+    outcome: "favorable",
+    relevantActs: ["Consumer Protection Act 2019", "RERA Act 2016 Section 18"],
+    url: "https://indiankanoon.org/doc/1827491/",
+  },
+  {
+    id: "case-9",
+    title: "Rame Gowda (D) by LRs. v. M. Varadappa Naidu",
+    court: "Supreme Court of India",
+    year: 2004,
+    citation: "(2004) 1 SCC 769",
+    similarityScore: 92,
+    matchReason: "Settled possession of property and protection against forcible dispossession without due course of law.",
+    bench: "Hon'ble Supreme Court of India",
+    keyRuling: "Even a trespasser or disputed occupant in settled possession cannot be thrown out by force without following due process of law. True owner must file suit rather than self-help.",
+    howItHelpsYou: "Enables immediate injunction against landlords, civic bodies, or private persons trying to dispossess you without a court order.",
+    outcome: "favorable",
+    relevantActs: ["Specific Relief Act Section 6", "Order 39 CPC"],
+    url: "https://indiankanoon.org/doc/1029481/",
+  },
+  {
+    id: "case-10",
+    title: "Rajnesh v. Neha & Anr.",
+    court: "Supreme Court of India",
+    year: 2020,
+    citation: "(2021) 2 SCC 324",
+    similarityScore: 93,
+    matchReason: "Uniform guidelines for overlapping maintenance claims and mandatory Affidavit of Assets & Liabilities.",
+    bench: "Hon'ble Supreme Court of India",
+    keyRuling: "Both spouses must submit standardized financial disclosure affidavits. Maintenance awards in overlapping proceedings must be adjusted against each other to avoid double payment.",
+    howItHelpsYou: "Prevents unfair inflated maintenance claims by requiring audited financial asset disclosures from the opposing party.",
+    outcome: "favorable",
+    relevantActs: ["Section 125 CrPC", "Domestic Violence Act Section 12", "HMA Section 24"],
+    url: "https://indiankanoon.org/doc/1928471/",
+  },
+];
+
+export function searchPrecedentDatabase(query: string, courtFilter?: string, yearFrom?: number): SimilarCase[] {
+  const cleanQ = query.toLowerCase().trim();
+  if (!cleanQ) {
+    return INDIAN_PRECEDENT_DATABASE;
+  }
+
+  const terms = cleanQ.split(/\s+/).filter((t) => t.length > 2);
+
+  return INDIAN_PRECEDENT_DATABASE.filter((c) => {
+    if (courtFilter && courtFilter !== "All Courts" && !c.court.toLowerCase().includes(courtFilter.toLowerCase())) {
+      return false;
+    }
+    if (yearFrom && c.year < yearFrom) {
+      return false;
+    }
+
+    const searchableText = `${c.title} ${c.matchReason} ${c.keyRuling} ${c.howItHelpsYou} ${c.relevantActs.join(" ")}`.toLowerCase();
+    return terms.some((term) => searchableText.includes(term));
+  }).sort((a, b) => b.similarityScore - a.similarityScore);
 }
 
 export function getMockResult(level: Level = "simple"): SimplifyResult {

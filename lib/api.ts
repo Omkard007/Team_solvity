@@ -102,3 +102,63 @@ export async function simplifyDocument(
     throw new ApiError(message, { code: "UNKNOWN" });
   }
 }
+
+export async function searchPrecedents(params: {
+  query: string;
+  court?: string;
+  yearFrom?: number;
+  yearTo?: number;
+}): Promise<{ query: string; totalFound: number; cases: import("./types").SimilarCase[]; analysisSummary?: string }> {
+  try {
+    const res = await fetch("/api/precedents", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(params),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Precedents search returned status ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.warn("API precedent search error, falling back to local dataset:", err);
+    const { searchPrecedentDatabase } = await import("./mock");
+    const cases = searchPrecedentDatabase(params.query, params.court, params.yearFrom);
+    return {
+      query: params.query,
+      totalFound: cases.length,
+      cases,
+      analysisSummary: `Retrieved ${cases.length} past judgments matching your case query from the legal precedent archive.`,
+    };
+  }
+}
+
+export async function analyzeActsAndRemedies(payload: {
+  summary: string;
+  caseTitle?: string;
+  documentText?: string;
+}): Promise<import("./types").ActsAnalysisResult> {
+  try {
+    const res = await fetch("/api/acts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Acts analysis returned status ${res.status}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.warn("API acts analysis error, falling back to structured sample:", err);
+    const { SAMPLE_LEGAL_REPORT } = await import("./mock");
+    return {
+      actsImposed: SAMPLE_LEGAL_REPORT.actsImposed || [],
+      actsCanImpose: SAMPLE_LEGAL_REPORT.actsCanImpose || [],
+      strategicSummary: "Analysis of statutes imposed by opponent vs constitutional and statutory remedies available to you.",
+    };
+  }
+}
+

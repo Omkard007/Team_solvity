@@ -38,13 +38,13 @@ export function Navbar({ variant = "default" }: NavbarProps) {
             className="hidden md:flex items-center gap-8 text-[13px] font-semibold tracking-[0.08em] text-[#4B5651] uppercase"
           >
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 className="transition-colors hover:text-[#1E2923] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm px-1 py-0.5"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
         )}
@@ -87,14 +87,14 @@ export function Navbar({ variant = "default" }: NavbarProps) {
         <div className="md:hidden border-b border-[#E6E8E7] bg-white px-6 py-6 shadow-xl animate-in slide-in-from-top-2">
           <nav className="flex flex-col gap-4 text-sm font-semibold tracking-[0.08em] uppercase text-[#4B5651]">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-2 transition-colors hover:text-[#1E2923]"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <div className="pt-4 border-t border-[#E6E8E7]">
               <Link
