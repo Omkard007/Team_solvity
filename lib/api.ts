@@ -1,6 +1,6 @@
 import type { Level, SimplifyResult } from "./types";
 import type { NyayaAIOutput } from "@/types/type";
-import { getMockResult } from "./mock";
+import { getMockResult, mapNyayaToLegalReport } from "./mock";
 import { countWords } from "./utils";
 
 export class ApiError extends Error {
@@ -71,11 +71,13 @@ export async function simplifyDocument(
 
     const json = await res.json();
     const data = (json.data || json) as NyayaAIOutput;
+    const report = mapNyayaToLegalReport(data);
 
     return {
+      report,
       data,
-      simplifiedText: data?.short_summary ?? "",
-      wordCount: data?.short_summary ? countWords(data.short_summary) : undefined,
+      simplifiedText: report.executiveSummary,
+      wordCount: countWords(report.executiveSummary),
     };
   } catch (err: unknown) {
     clearTimeout(timeoutId);

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check, Users, Terminal } from "lucide-react";
 import { Section } from "@/components/layout";
+import { Reveal } from "@/components/motion/Reveal";
 import { FEATURE_TABS_CONTENT } from "@/lib/content";
 
 export function FeatureTabs() {
@@ -12,15 +13,17 @@ export function FeatureTabs() {
     FEATURE_TABS_CONTENT.tabs[0];
 
   return (
-    <Section tone="purple" id="flexible-modes" className="bg-[var(--section-bg)]">
+    <Section tone="purple" id="flexible-modes" className="bg-[var(--section-bg,#F6F5FA)]">
       <div className="mx-auto max-w-4xl text-center">
-        <p className="eyebrow-label text-[#4B5651]">
-          {FEATURE_TABS_CONTENT.eyebrow}
-        </p>
+        <Reveal>
+          <p className="eyebrow-label text-[#5B6661]">
+            {FEATURE_TABS_CONTENT.eyebrow}
+          </p>
 
-        <h2 className="mt-4 display-h2">
-          {FEATURE_TABS_CONTENT.h2}
-        </h2>
+          <h2 className="mt-4 display-h2">
+            {FEATURE_TABS_CONTENT.h2}
+          </h2>
+        </Reveal>
 
         {/* Tab switch buttons */}
         <div className="mt-8 flex justify-center gap-3">
@@ -45,8 +48,8 @@ export function FeatureTabs() {
           })}
         </div>
 
-        {/* Tab Content Card */}
-        <div className="mt-10 rounded-[20px] border border-[#E6E8E7] bg-white p-8 sm:p-10 text-left shadow-[0_20px_45px_rgba(0,0,0,0.05)]">
+        {/* Tab Content Card with Reveal */}
+        <Reveal delay={100} className="mt-10 rounded-[24px] border border-[#ECEEED] bg-white p-8 sm:p-10 text-left shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)]">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             <div className="md:col-span-7">
               <h3 className="text-2xl font-bold tracking-tight text-[#1E2923]">
@@ -107,7 +110,7 @@ export function FeatureTabs() {
               )}
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </Section>
   );

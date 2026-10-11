@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { SiteFooter } from "@/components/layout";
+import { Navbar } from "@/components/home";
 import { LegalReportDashboard } from "@/components/report";
 import GoogleTranslate from "@/components/GoogleTranslate";
-import { SAMPLE_NYAYA_AI_OUTPUT, ORIGINAL_COURT_DOCUMENT } from "@/lib/mock";
+import { SAMPLE_LEGAL_REPORT } from "@/lib/mock";
 
 export const metadata: Metadata = {
   title: "Legal Document Analysis Report – Legal Aid",
@@ -16,8 +17,9 @@ export default function ResultPage() {
   return (
     <div
       data-tone="green"
-      className="flex min-h-screen flex-col bg-[#F6F5FB] text-[#1E2923] selection:bg-[var(--accent-soft)] selection:text-[var(--accent-ink)]"
+      className="flex min-h-screen flex-col bg-[var(--section-bg,#F6F5FA)] text-[#1E2923] selection:bg-[var(--accent-soft)] selection:text-[var(--accent-ink)]"
     >
+      <Navbar variant="compact" />
       <main className="relative mx-auto w-full max-w-5xl flex-1 px-4 sm:px-6 py-8 sm:py-12">
         {/* Absolutely positioned Google Translate widget in the top-right corner */}
         <div className="absolute top-6 sm:top-10 right-4 sm:right-6 z-30">
@@ -35,8 +37,7 @@ export default function ResultPage() {
         </div>
 
         <LegalReportDashboard
-          data={SAMPLE_NYAYA_AI_OUTPUT}
-          originalText={ORIGINAL_COURT_DOCUMENT}
+          report={SAMPLE_LEGAL_REPORT}
         />
       </main>
       <SiteFooter />
