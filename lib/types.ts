@@ -1,8 +1,11 @@
+import type { NyayaAIOutput } from "@/types/type";
+
 export type Level = "simple";
 
 export interface SimplifyResult {
-  simplifiedText: string; // paragraphs separated by \n\n
-  originalText?: string; // extracted text from the PDF
+  data?: NyayaAIOutput;
+  simplifiedText?: string;
+  originalText?: string;
   wordCount?: number;
 }
 

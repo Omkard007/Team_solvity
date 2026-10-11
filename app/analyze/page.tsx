@@ -14,7 +14,7 @@ export default function AnalyzePage() {
       data-tone="green"
       className="flex min-h-screen flex-col bg-[#F6F5FB] text-[#1E2923] selection:bg-[var(--accent-soft)] selection:text-[var(--accent-ink)]"
     >
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:py-12">
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 sm:px-6 py-8 sm:py-12">
         <div className="space-y-6 sm:space-y-8">
           <BackLink />
           <PageHeader

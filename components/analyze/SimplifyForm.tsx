@@ -15,7 +15,7 @@ export function SimplifyForm() {
   const level: Level = "simple";
   const [fileError, setFileError] = useState<string | null>(null);
 
-  const { isLoading, error, result, simplify, resetError } = useSimplify();
+  const { isLoading, error, result, simplify, resetError, clearResult } = useSimplify();
   const resultRef = useRef<HTMLDivElement | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -33,6 +33,23 @@ export function SimplifyForm() {
   }, [result]);
 
   const canSubmit = Boolean(selectedSource) && !isLoading;
+
+  // Once a result is generated, transition seamlessly to the full Legal Dashboard
+  if (result) {
+    return (
+      <div ref={resultRef} className="animate-in fade-in-50 duration-300">
+        <ResultCard
+          result={result}
+          isLoading={false}
+          level={level}
+          onReset={() => {
+            clearResult();
+            setSelectedSource(null);
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -60,7 +77,7 @@ export function SimplifyForm() {
         className="w-full text-base font-bold shadow-sm"
       >
         {isLoading ? (
-          "Simplifying…"
+          "Simplifying Document…"
         ) : (
           <span className="inline-flex items-center gap-2">
             <Sparkles className="h-4 w-4" aria-hidden="true" />
@@ -83,9 +100,9 @@ export function SimplifyForm() {
         />
       )}
 
-      {(isLoading || result) && (
-        <div ref={resultRef} className="pt-2">
-          <ResultCard result={result} isLoading={isLoading} level={level} />
+      {isLoading && (
+        <div ref={resultRef} className="pt-2 animate-in fade-in-50 duration-300">
+          <ResultCard result={null} isLoading={true} level={level} />
         </div>
       )}
     </form>
