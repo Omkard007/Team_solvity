@@ -7,6 +7,7 @@ import { Alert } from "@/components/ui/Alert";
 import { StepCard } from "./StepCard";
 import { FileField } from "./FileField";
 import { ResultCard } from "./ResultCard";
+import GoogleTranslate from "@/components/GoogleTranslate";
 import { useSimplify } from "@/hooks/useSimplify";
 import type { Level, SelectedSource } from "@/lib/types";
 
@@ -37,7 +38,8 @@ export function SimplifyForm() {
   // Once a result is generated, transition seamlessly to the full Legal Dashboard
   if (result) {
     return (
-      <div ref={resultRef} className="animate-in fade-in-50 duration-300">
+      <div ref={resultRef} className="relative animate-in fade-in-50 duration-300">
+        <GoogleTranslate className="absolute -top-14 sm:-top-16 right-0 z-30" />
         <ResultCard
           result={result}
           isLoading={false}
