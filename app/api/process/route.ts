@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from '@google/genai';
-import { text } from "stream/consumers";
-
+import { extractText, getDocumentProxy } from "unpdf";
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 const SUPPORTED_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
 
@@ -35,10 +34,7 @@ Output only the extracted text.`,
 const client = new GoogleGenAI({
     apiKey: process.env.GOOGLE_API_KEY || '',
 });
-const generationConfig = {
-    max_output_tokens: 5000,
-    thinking_level: 'medium',
-};
+
 
 export async function POST(request: Request) {
     const DocumentContents = ''
@@ -68,7 +64,9 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: "File Uploaded", data: aiRes.text }, { status: 200 });
     }
     if (file.type.includes("pdf")) {
-
+        const text = await extractPdfText(file)
+        console.log(text)
+        return NextResponse.json({message:"File Uploaded", data:text}, { status: 200 });
     }
 
     // const aiResponse = await useAI({
@@ -80,3 +78,12 @@ export async function POST(request: Request) {
 }
 
 
+
+
+
+export async function extractPdfText(file: File) {
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const pdf = await getDocumentProxy(bytes);
+  const { totalPages, text } = await extractText(pdf, { mergePages: true });
+  return { totalPages, text: text.trim() };
+}
