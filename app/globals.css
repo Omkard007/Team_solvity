@@ -143,3 +143,87 @@ body {
     stroke-dashoffset: 0;
   }
 }
+
+/* ==========================================================================
+   Google Translate Widget - Sleek Integration Matching Legal Aid Theme
+   ========================================================================== */
+.google-translate-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid #E6E8E7;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem 0.25rem 0.625rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.google-translate-container:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.06);
+}
+
+#google_translate_element {
+  display: inline-flex;
+  align-items: center;
+}
+
+#google_translate_element .goog-te-gadget {
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+  font-size: 0px !important;
+  color: transparent !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+#google_translate_element .goog-te-gadget span,
+#google_translate_element .goog-te-gadget a,
+#google_translate_element .goog-logo-link {
+  display: none !important;
+}
+
+#google_translate_element .goog-te-combo {
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #1E2923 !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  padding: 2px 4px !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  border-radius: 6px !important;
+}
+
+#google_translate_element .goog-te-combo:focus {
+  outline: none !important;
+}
+
+/* Suppress Google top iframe banner pushing body down */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+/* Suppress hover tooltips and yellow text highlight */
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
