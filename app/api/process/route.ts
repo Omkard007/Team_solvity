@@ -1,13 +1,33 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from '@google/genai';
+<<<<<<< HEAD
+import type { Interactions } from '@google/genai';
+=======
 import { extractText, getDocumentProxy } from "unpdf";
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 const SUPPORTED_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
 import { SystemInstructions } from "@/prompt/prompts";
+>>>>>>> 400e29e56c8ee22766cc431c124e5023890ee4a2
 
 const client = new GoogleGenAI({
     apiKey: process.env.GOOGLE_API_KEY || '',
 });
+<<<<<<< HEAD
+const generationConfig = {
+    max_output_tokens:5000,
+    thinking_level: 'medium',
+};
+
+export async function GET(request: Request) {
+     const interaction = await client.interactions.create({
+        model: 'models/gemini-3.8-flash',
+        input: 'tell me about Ai',
+        generation_config: generationConfig,
+    });
+    console.log(interaction.steps?.at(-1));
+
+    return NextResponse.json({ message: "Hello from the API!",response: interaction.steps?.at(-1) });
+=======
 
 
 export async function POST(request: Request) {
@@ -60,4 +80,5 @@ export async function extractPdfText(file: File) {
     const pdf = await getDocumentProxy(bytes);
     const { totalPages, text } = await extractText(pdf, { mergePages: true });
     return { totalPages, text: text.trim() };
+>>>>>>> 400e29e56c8ee22766cc431c124e5023890ee4a2
 }
