@@ -4,6 +4,62 @@ export type Level = "simple";
 
 export type OutcomeTone = "green" | "amber" | "red" | "neutral";
 
+export interface ActImposed {
+  actName: string;
+  section: string;
+  imposedBy: string;
+  allegationOrClaim: string;
+  potentialPenalty?: string;
+  defenseAngle: string;
+}
+
+export interface ActToImpose {
+  actName: string;
+  section: string;
+  reliefType: string; // e.g. "Immediate Stay", "Compensation", "Regularisation"
+  howToInvoke: string;
+  whyItHelps: string;
+  prerequisites?: string;
+  strength: "High" | "Medium" | "Strategic";
+}
+
+export interface SimilarCase {
+  id: string;
+  title: string;
+  court: string;
+  year: number;
+  citation: string;
+  similarityScore: number; // e.g. 96
+  matchReason: string;
+  bench?: string;
+  keyRuling: string;
+  howItHelpsYou: string;
+  outcome: "favorable" | "caution" | "precedent";
+  url?: string;
+  relevantActs: string[];
+}
+
+export interface PrecedentSearchParams {
+  query: string;
+  court?: string;
+  yearFrom?: number;
+  yearTo?: number;
+  legalIssue?: string;
+}
+
+export interface PrecedentSearchResult {
+  query: string;
+  totalFound: number;
+  cases: SimilarCase[];
+  analysisSummary?: string;
+}
+
+export interface ActsAnalysisResult {
+  actsImposed: ActImposed[];
+  actsCanImpose: ActToImpose[];
+  strategicSummary?: string;
+}
+
 export interface LegalReport {
   title: string;                       // "Legal Document Analysis"
   outcomeBadge: { label: string; description: string; tone: OutcomeTone };
@@ -52,6 +108,10 @@ export interface LegalReport {
   }[];
   originalText: string;
   isSample?: boolean;
+  // New features: Acts Imposed vs Can Impose, and Similar Past Cases
+  actsImposed?: ActImposed[];
+  actsCanImpose?: ActToImpose[];
+  similarCases?: SimilarCase[];
 }
 
 export interface SimplifyResult {
