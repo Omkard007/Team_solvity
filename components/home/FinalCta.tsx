@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { FileText } from "lucide-react";
 import { Section } from "@/components/layout";
+import { Reveal } from "@/components/motion/Reveal";
 import { FINAL_CTA_CONTENT, HERO_CONTENT } from "@/lib/content";
 
 export function FinalCta() {
@@ -14,7 +15,7 @@ export function FinalCta() {
 
   return (
     <Section tone="green" id="final-cta" className="bg-white">
-      <div className="mx-auto max-w-3xl text-center flex flex-col items-center">
+      <Reveal className="mx-auto max-w-3xl text-center flex flex-col items-center">
         <h2 className="display-h2">
           {FINAL_CTA_CONTENT.h2}
         </h2>
@@ -71,7 +72,7 @@ export function FinalCta() {
             </p>
           </div>
         </div>
-      </div>
+      </Reveal>
     </Section>
   );
 }

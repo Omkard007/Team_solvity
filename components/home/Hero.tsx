@@ -7,6 +7,7 @@ import { Upload, Play, FileText } from "lucide-react";
 import { Section } from "@/components/layout";
 import { Button } from "@/components/ui/Button";
 import { BrushUnderline } from "@/components/brush";
+import { Reveal } from "@/components/motion/Reveal";
 import { HERO_CONTENT } from "@/lib/content";
 
 export function Hero() {
@@ -26,58 +27,62 @@ export function Hero() {
   return (
     <Section tone="green" id="hero" className="bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        {/* Left Column: Headline, Lead, Buttons */}
+        {/* Left Column: Headline, Lead, Buttons with Reveal */}
         <div className="lg:col-span-7 flex flex-col items-start text-left">
-          <h1 className="display-h1">
-            {HERO_CONTENT.h1Prefix}
-            <span className="relative inline-block text-[var(--accent)] whitespace-nowrap">
-              {HERO_CONTENT.h1Highlight}
-              <BrushUnderline />
-            </span>
-          </h1>
-
-          <p className="mt-8 lead-body max-w-xl">
-            {HERO_CONTENT.lead}
-          </p>
-
-          <div className="mt-10 flex flex-wrap items-center gap-6">
-            <Link href="/analyze">
-              <Button
-                variant="accent"
-                size="lg"
-                className="gap-2.5 text-base"
-              >
-                <Upload className="h-5 w-5" aria-hidden="true" />
-                <span>{HERO_CONTENT.ctaPrimary}</span>
-              </Button>
-            </Link>
-
-            <a
-              href="#how-it-works"
-              className="inline-flex items-center gap-3 text-sm font-semibold text-[#1E2923] hover:text-[#4B5651] transition-colors group"
-            >
-              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1F2A24] text-white shadow-sm transition-transform group-hover:scale-105">
-                <Play className="h-4 w-4 fill-white ml-0.5" aria-hidden="true" />
+          <Reveal>
+            <h1 className="display-h1">
+              {HERO_CONTENT.h1Prefix}
+              <span className="relative inline-block text-[var(--accent)] whitespace-nowrap">
+                {HERO_CONTENT.h1Highlight}
+                <BrushUnderline />
               </span>
-              <span>{HERO_CONTENT.ctaSecondary}</span>
-            </a>
-          </div>
+            </h1>
+
+            <p className="mt-8 lead-body max-w-xl">
+              {HERO_CONTENT.lead}
+            </p>
+
+            <div className="mt-10 flex flex-wrap items-center gap-6">
+              <Link href="/analyze">
+                <Button
+                  variant="accent"
+                  size="lg"
+                  className="gap-2.5 text-base"
+                >
+                  <Upload className="h-5 w-5" aria-hidden="true" />
+                  <span>{HERO_CONTENT.ctaPrimary}</span>
+                </Button>
+              </Link>
+
+              <a
+                href="#how-it-works"
+                className="inline-flex items-center gap-3 text-sm font-semibold text-[#1E2923] hover:text-[#4B5651] transition-colors group"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1F2A24] text-white shadow-sm transition-transform group-hover:scale-105">
+                  <Play className="h-4 w-4 fill-white ml-0.5" aria-hidden="true" />
+                </span>
+                <span>{HERO_CONTENT.ctaSecondary}</span>
+              </a>
+            </div>
+          </Reveal>
         </div>
 
-        {/* Right Column: Dashed Upload Card */}
+        {/* Right Column: Dashed Upload Card with Reveal */}
         <div className="lg:col-span-5 w-full flex justify-center">
-          <div
-            onClick={handleCardClick}
-            className="group relative w-full max-w-[440px] rounded-[40px] border-4 border-dashed border-[#E3E6E5] bg-white p-8 sm:p-10 text-center shadow-2xl shadow-zinc-200/50 hover:border-[var(--accent)] hover:shadow-[0_20px_50px_rgba(76,175,106,0.12)] transition-all duration-300 cursor-pointer flex flex-col items-center"
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="application/pdf"
-              className="hidden"
-              onChange={handleFileChange}
-              tabIndex={-1}
-            />
+          <Reveal delay={120} className="w-full max-w-[440px]">
+            <div
+              onClick={handleCardClick}
+              className="group relative w-full rounded-[40px] border-4 border-dashed border-[#E3E6E5] bg-white p-8 sm:p-10 text-center shadow-2xl shadow-zinc-200/50 hover:border-[var(--accent)] hover:shadow-[0_20px_50px_rgba(76,175,106,0.12)] transition-all duration-300 cursor-pointer flex flex-col items-center"
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="application/pdf"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+                tabIndex={-1}
+                aria-hidden="true"
+              />
 
             {/* Three fanned document tiles: ORDER, PDF, NOTICE */}
             <div className="relative flex items-center justify-center pt-4 pb-2 w-full h-32 select-none">
@@ -122,8 +127,9 @@ export function Hero() {
               {HERO_CONTENT.dropzone.footnote}
             </p>
           </div>
-        </div>
+        </Reveal>
       </div>
-    </Section>
+    </div>
+  </Section>
   );
 }

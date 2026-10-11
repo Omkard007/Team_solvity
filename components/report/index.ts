@@ -10,4 +10,5 @@ export * from "./LegalLinksCard";
 export * from "./UncertaintiesCard";
 export * from "./LegalDisclaimerCard";
 export * from "./OriginalTextCard";
+export * from "./ProcessingStepper";
 export * from "./LegalReportDashboard";

@@ -9,7 +9,7 @@ import { Tabs } from "@/components/ui/Tabs";
 import { Disclaimer } from "@/components/layout/Disclaimer";
 import { CopyButton } from "./CopyButton";
 import { DownloadButton } from "./DownloadButton";
-import { LegalReportDashboard } from "@/components/report";
+import { LegalReportDashboard, ProcessingStepper } from "@/components/report";
 import type { Level, SimplifyResult } from "@/lib/types";
 import { LEVELS } from "@/lib/constants";
 import { countWords } from "@/lib/utils";
@@ -36,63 +36,21 @@ export function ResultCard({
 }: ResultCardProps) {
   const [activeTab, setActiveTab] = useState<string>("simplified");
 
-  // If we have full structured NyayaAIOutput data, render the comprehensive LegalReportDashboard!
-  if (result?.data) {
+  // If loading, show ProcessingStepper with ticking steps and shimmering skeleton
+  if (isLoading) {
+    return <ProcessingStepper className={className} />;
+  }
+
+  // If we have full structured LegalReport or NyayaAIOutput data, render the comprehensive LegalReportDashboard!
+  if (result?.report || result?.data) {
     return (
       <LegalReportDashboard
+        report={result.report}
         data={result.data}
         originalText={result.originalText}
         onReset={onReset}
         className={className}
       />
-    );
-  }
-
-  // Loading state with intelligent progress indicators
-  if (isLoading) {
-    return (
-      <Card className={className}>
-        <div className="flex items-center gap-3.5 border-b border-[#E6E8E7] bg-[#FAFAFA] px-6 py-4.5">
-          <Badge variant="icon" aria-hidden="true">
-            <Sparkles className="h-4 w-4 animate-spin text-[var(--accent)]" />
-          </Badge>
-          <div>
-            <h2 className="text-base font-bold text-[#1E2923]">
-              Analyzing Court Document…
-            </h2>
-            <p className="text-xs text-[#4B5651]">
-              Extracting legal rulings, statutory sections, timeline, and plain English translation
-            </p>
-          </div>
-        </div>
-
-        <div className="p-6 space-y-6" aria-busy="true" aria-live="polite">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="flex items-center gap-2 rounded-xl border border-[#E6E8E7] bg-[#FAFAFA] p-3 text-xs text-[#4B5651]">
-              <Scale className="h-4 w-4 text-[var(--accent)] animate-pulse" />
-              <span>Deciphering legal rulings…</span>
-            </div>
-            <div className="flex items-center gap-2 rounded-xl border border-[#E6E8E7] bg-[#FAFAFA] p-3 text-xs text-[#4B5651]">
-              <Clock className="h-4 w-4 text-[var(--accent)] animate-pulse" />
-              <span>Sequencing case timeline…</span>
-            </div>
-            <div className="flex items-center gap-2 rounded-xl border border-[#E6E8E7] bg-[#FAFAFA] p-3 text-xs text-[#4B5651]">
-              <BookOpen className="h-4 w-4 text-[var(--accent)] animate-pulse" />
-              <span>Decoding legal statutes…</span>
-            </div>
-          </div>
-
-          <div className="space-y-4 py-2">
-            <Skeleton className="h-8 w-3/4" />
-            <Skeleton className="h-5 w-full" />
-            <Skeleton className="h-5 w-5/6" />
-            <Skeleton className="h-5 w-2/3" />
-            <div className="pt-2">
-              <Skeleton className="h-28 w-full rounded-xl" />
-            </div>
-          </div>
-        </div>
-      </Card>
     );
   }
 

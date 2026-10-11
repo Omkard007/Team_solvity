@@ -2,43 +2,74 @@
 
 import { Clock, Calendar } from "lucide-react";
 import type { TimelineEvent } from "@/types/type";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import type { LegalReport } from "@/lib/types";
+import { SectionCard } from "@/components/ui/SectionCard";
+import { useInView } from "@/hooks/useInView";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
 
 export interface TimelineCardProps {
-  events: TimelineEvent[];
+  events?: TimelineEvent[];
+  timeline?: LegalReport["timeline"];
   className?: string;
 }
 
-export function TimelineCard({ events, className }: TimelineCardProps) {
-  if (!events || events.length === 0) return null;
+export function TimelineCard({ events, timeline, className }: TimelineCardProps) {
+  const items = timeline || (events || []).map((e) => ({
+    date: e.date,
+    event: e.event,
+  }));
+
+  const [ref, inView] = useInView({ threshold: 0.1, once: true });
+  const reducedMotion = usePrefersReducedMotion();
+
+  if (!items || items.length === 0) return null;
 
   return (
-    <Card className={cn("overflow-hidden", className)}>
-      <div className="flex items-center gap-3 border-b border-[#E6E8E7] bg-[#FAFAFA] px-6 py-4">
-        <Badge variant="icon">
-          <Clock className="h-4 w-4" />
-        </Badge>
-        <div>
-          <h2 className="text-base font-bold text-[#1E2923]">Timeline of Events</h2>
-          <p className="text-xs text-[#4B5651]">Chronological sequence of key happenings leading to the order</p>
-        </div>
-      </div>
+    <SectionCard
+      icon={<Clock className="h-6 w-6 text-[var(--accent-ink)]" />}
+      title="Timeline of Events"
+      subtitle="Chronological sequence of key happenings leading to the order"
+      className={cn("overflow-hidden", className)}
+    >
+      <div ref={ref} className="relative pl-6 sm:pl-8">
+        {/* Animated Drawing Vertical Line (scaleY from top) */}
+        <div
+          aria-hidden="true"
+          className="absolute left-3 top-3 bottom-3 w-0.5 bg-[var(--accent)] origin-top transition-transform duration-800 ease-[var(--ease-out)]"
+          style={{
+            transform: inView || reducedMotion ? "scaleY(1)" : "scaleY(0)",
+          }}
+        />
 
-      <div className="p-6">
-        <div className="relative pl-6 sm:pl-8 before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-[#E6E8E7]">
-          <div className="space-y-6">
-            {events.map((item, idx) => (
-              <div key={idx} className="relative group">
-                {/* Timeline dot */}
-                <span className="absolute -left-6 sm:-left-8 top-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-[var(--accent)] text-white shadow-xs">
+        <div className="space-y-6">
+          {items.map((item, idx) => {
+            const delay = reducedMotion ? 0 : idx * 90 + 100;
+
+            return (
+              <div
+                key={idx}
+                className="relative group transition-all duration-500 ease-[var(--ease-out)]"
+                style={{
+                  transform: inView || reducedMotion ? "none" : "translateX(16px)",
+                  opacity: inView || reducedMotion ? 1 : 0,
+                  transitionDelay: `${delay}ms`,
+                }}
+              >
+                {/* Timeline dot popping with ease-spring */}
+                <span
+                  className="absolute -left-6 sm:-left-8 top-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-[var(--accent)] text-white shadow-xs transition-transform duration-500 ease-[var(--ease-spring)]"
+                  style={{
+                    transform: inView || reducedMotion ? "scale(1)" : "scale(0)",
+                    transitionDelay: `${delay + 60}ms`,
+                  }}
+                >
                   <span className="h-2 w-2 rounded-full bg-white" />
                 </span>
 
-                <div className="rounded-xl border border-[#E6E8E7] bg-white p-4 transition-shadow hover:shadow-xs">
+                <div className="inner-tile p-4 transition-all">
                   {item.date && (
-                    <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-bold text-[var(--accent-ink)] mb-2">
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-bold text-[var(--accent-ink)] mb-2 border border-[var(--summary-border)]">
                       <Calendar className="h-3 w-3" />
                       {item.date}
                     </div>
@@ -48,10 +79,10 @@ export function TimelineCard({ events, className }: TimelineCardProps) {
                   </p>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
-    </Card>
+    </SectionCard>
   );
 }

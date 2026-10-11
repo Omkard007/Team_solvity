@@ -4,21 +4,33 @@
   --background: #FFFFFF;
   --foreground: #1E2923;
   --ink: #1E2923;
-  --muted: #4B5651;
-  --hairline: #E6E8E7;
-  --section-bg: #F6F5FB;
+  --muted: #5B6661;
+  --hairline: #ECEEED;
+  --section-bg: #F6F5FA;
 
-  /* Default tone is green */
+  /* Default tone is green (brand primary) */
   --accent: #4CAF6A;
   --accent-hover: #3E9B58;
   --accent-soft: #DDF4E4;
-  --accent-ink: #2E8F4E;
+  --accent-ink: #3E8E5A;
   --brush: rgba(76, 175, 106, 0.06);
+
+  /* Semantic palette */
+  --summary-bg: #F3FBF6;
+  --summary-border: #D5EFDF;
+  --amber-bg: #FFFBEB;
+  --amber-border: #F3E7B5;
+  --amber-text: #8A4B0F;
+  --amber-pill-bg: #FFF3D6;
 
   /* Button and UI extras */
   --btn-dark: #1F2A24;
   --btn-disabled: #D5D8D7;
   --mockup-blue: #78C6EC;
+
+  /* Motion easing curves */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @theme inline {
@@ -39,28 +51,28 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Tone GREEN: Hero, Split Feature, Final CTA */
+/* Tone GREEN: Primary brand tone across Results, /analyze, Nav, Footer, Hero */
 [data-tone="green"] {
   --accent: #4CAF6A;
   --accent-hover: #3E9B58;
   --accent-soft: #DDF4E4;
-  --accent-ink: #2E8F4E;
+  --accent-ink: #3E8E5A;
   --brush: rgba(76, 175, 106, 0.06);
-  --section-bg: #FFFFFF;
+  --section-bg: #F6F5FA;
   --text-main: #1E2923;
-  --text-muted: #4B5651;
+  --text-muted: #5B6661;
 }
 
-/* Tone PURPLE: Benefits, Result Manager, Key Facts, Feature Tabs, How It Works, Who It Helps */
+/* Tone PURPLE: Reserved for marketing sections (Benefits, Feature Tabs) */
 [data-tone="purple"] {
   --accent: #5B4FD6;
   --accent-hover: #4C40C5;
   --accent-soft: #ECEAFB;
   --accent-ink: #4A3FC0;
   --brush: rgba(91, 79, 214, 0.05);
-  --section-bg: #F6F5FB;
+  --section-bg: #F6F5FA;
   --text-main: #1E2923;
-  --text-muted: #4B5651;
+  --text-muted: #5B6661;
 }
 
 /* Tone NEUTRAL: Footer, FAQ */
@@ -70,18 +82,141 @@ body {
   --accent-soft: #F0F2F1;
   --accent-ink: #1E2923;
   --brush: rgba(30, 41, 35, 0.04);
-  --section-bg: #F6F5FB;
+  --section-bg: #F6F5FA;
   --text-main: #1E2923;
-  --text-muted: #4B5651;
+  --text-muted: #5B6661;
 }
 
-/* Typography styles matching reference specs */
+/* ==========================================================================
+   Shared Component Utility Classes
+   ========================================================================== */
+
+/* Outer Section Card: 24px radius, hairline border, soft large-blur shadow */
+.section-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.04), 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+
+/* Card Header Strip: 56px rounded-2xl icon badge in --accent-soft */
+.section-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #FAFAFA;
+  border-bottom: 1px solid var(--hairline);
+  padding: 1.25rem 1.5rem;
+}
+
+.section-card-badge {
+  display: flex;
+  height: 56px;
+  width: 56px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background-color: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Inner Tile: 16px radius, hairline border, subtle shadow */
+.inner-tile {
+  background-color: #FFFFFF;
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.inner-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.04);
+  border-color: rgba(76, 175, 106, 0.3);
+}
+
+/* Summary Box Tint: #F3FBF6 with #D5EFDF border */
+.summary-tint-box {
+  background-color: var(--summary-bg);
+  border: 1px solid var(--summary-border);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+/* Amber Alert Box: #FFFBEB with #F3E7B5 border */
+.amber-alert-box {
+  background-color: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+  color: var(--amber-text);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+.amber-date-pill {
+  background-color: var(--amber-pill-bg);
+  border: 1px solid var(--amber-border);
+  color: var(--amber-text);
+  border-radius: 9999px;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* Outline Pill Button */
+.outline-pill-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: 9999px;
+  background-color: #FFFFFF;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  transition: all 0.18s var(--ease-out);
+  cursor: pointer;
+}
+
+.outline-pill-button:hover {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
+}
+
+.outline-pill-button:active {
+  transform: scale(0.97);
+}
+
+/* Statute & Section Monospace Chip */
+.code-chip {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--accent-ink);
+  background-color: var(--accent-soft);
+  padding: 0.2em 0.55em;
+  border-radius: 6px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+/* Display typography */
 .display-h1 {
   font-family: var(--font-display), var(--font-sans), sans-serif;
   font-weight: 800;
   font-size: clamp(2.75rem, 7vw, 5.5rem);
   line-height: 0.98;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   color: #1E2923;
 }
 
@@ -90,7 +225,7 @@ body {
   font-weight: 800;
   font-size: clamp(2.25rem, 5vw, 4rem);
   line-height: 1.05;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   color: #1E2923;
 }
 
@@ -98,27 +233,15 @@ body {
   font-weight: 400;
   font-size: clamp(1.125rem, 1.7vw, 1.75rem);
   line-height: 1.6;
-  color: #4B5651;
+  color: #5B6661;
 }
 
 .eyebrow-label {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #4B5651;
-}
-
-.code-chip {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.9em;
-  font-weight: 600;
-  color: var(--accent);
-  background-color: var(--accent-soft);
-  padding: 0.15em 0.5em;
-  border-radius: 6px;
-  display: inline-block;
-  line-height: 1.3;
+  color: #5B6661;
 }
 
 /* Headline mark draw-on animation */
@@ -137,26 +260,101 @@ body {
   animation: drawMark 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-draw-mark {
-    animation: none;
-    stroke-dashoffset: 0;
+/* ==========================================================================
+   Motion Keyframes & Micro-Animations
+   ========================================================================== */
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
+@keyframes balanceTilt {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(-10deg);
+  }
+  70% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 106, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(76, 175, 106, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 106, 0);
+  }
+}
+
+@keyframes markerSwipe {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+.marker-highlight {
+  background-image: linear-gradient(120deg, rgba(76, 175, 106, 0.22) 0%, rgba(76, 175, 106, 0.22) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 0 3px;
+  border-radius: 3px;
+  animation: markerSwipe 0.6s var(--ease-out) forwards;
+}
+
+.marker-highlight-amber {
+  background-image: linear-gradient(120deg, rgba(243, 231, 181, 0.6) 0%, rgba(243, 231, 181, 0.6) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 0 3px;
+  border-radius: 3px;
+  animation: markerSwipe 0.6s var(--ease-out) forwards;
+}
+
+.animate-pop-in {
+  animation: popIn 0.4s var(--ease-spring) forwards;
+}
+
+.animate-balance-tilt {
+  animation: balanceTilt 0.8s var(--ease-spring);
+}
+
+.animate-pulse-ring {
+  animation: pulseRing 1.5s ease-out 2;
+}
+
 /* ==========================================================================
-   Google Translate Widget - Sleek Integration Matching Legal Aid Theme
+   Google Translate Widget
    ========================================================================== */
 .google-translate-container {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background-color: #FFFFFF;
-  border: 1px solid #E6E8E7;
+  border: 1px solid var(--hairline);
   border-radius: 9999px;
   padding: 0.25rem 0.75rem 0.25rem 0.625rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s var(--ease-out);
 }
 
 .google-translate-container:hover {
@@ -202,7 +400,6 @@ body {
   outline: none !important;
 }
 
-/* Suppress Google top iframe banner pushing body down */
 .goog-te-banner-frame.skiptranslate,
 .goog-te-banner-frame {
   display: none !important;
@@ -210,12 +407,6 @@ body {
   height: 0 !important;
 }
 
-body {
-  top: 0px !important;
-  position: static !important;
-}
-
-/* Suppress hover tooltips and yellow text highlight */
 .goog-tooltip,
 .goog-tooltip:hover,
 .goog-te-balloon-frame {
@@ -227,3 +418,57 @@ body {
   box-shadow: none !important;
 }
 
+/* ==========================================================================
+   Reduced Motion Overrides
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .animate-draw-mark,
+  .animate-pop-in,
+  .animate-balance-tilt,
+  .animate-pulse-ring,
+  .marker-highlight,
+  .marker-highlight-amber {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
+
+/* ==========================================================================
+   Print Stylesheet
+   ========================================================================== */
+@media print {
+  nav,
+  footer,
+  .no-print,
+  .sticky,
+  .google-translate-container,
+  button:not(.print-keep) {
+    display: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .section-card {
+    border: 1px solid #CCCCCC !important;
+    box-shadow: none !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .print-expand {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+}

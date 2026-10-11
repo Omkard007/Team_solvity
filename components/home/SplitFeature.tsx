@@ -5,6 +5,8 @@ import { FileUp, BookOpen, Copy, FileText } from "lucide-react";
 import { Section } from "@/components/layout";
 import { Button } from "@/components/ui/Button";
 import { BrushUnderline } from "@/components/brush";
+import { Reveal } from "@/components/motion/Reveal";
+import { Stagger } from "@/components/motion/Stagger";
 import { SPLIT_FEATURE_CONTENT } from "@/lib/content";
 
 export function SplitFeature() {
@@ -13,7 +15,7 @@ export function SplitFeature() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         {/* Left Column: Stacked App Window Mockup */}
         <div className="lg:col-span-6 relative flex justify-center order-2 lg:order-1">
-          <div className="relative w-full max-w-[480px]">
+          <Reveal className="relative w-full max-w-[480px]">
             {/* Tilted background card 1 */}
             <div
               aria-hidden="true"
@@ -84,64 +86,66 @@ export function SplitFeature() {
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
 
         {/* Right Column: H2, Copy, Buttons, 3 Feature points */}
         <div className="lg:col-span-6 flex flex-col items-start order-1 lg:order-2">
-          <h2 className="display-h2">
-            {SPLIT_FEATURE_CONTENT.h2Prefix}
-            <span className="relative inline-block text-[var(--accent)] whitespace-nowrap">
-              {SPLIT_FEATURE_CONTENT.h2Highlight}
-              <BrushUnderline />
-            </span>
-            {SPLIT_FEATURE_CONTENT.h2Suffix}
-          </h2>
+          <Reveal delay={120}>
+            <h2 className="display-h2">
+              {SPLIT_FEATURE_CONTENT.h2Prefix}
+              <span className="relative inline-block text-[var(--accent)] whitespace-nowrap">
+                {SPLIT_FEATURE_CONTENT.h2Highlight}
+                <BrushUnderline />
+              </span>
+              {SPLIT_FEATURE_CONTENT.h2Suffix}
+            </h2>
 
-          <p className="mt-6 lead-body">
-            {SPLIT_FEATURE_CONTENT.lead}
-          </p>
+            <p className="mt-6 lead-body">
+              {SPLIT_FEATURE_CONTENT.lead}
+            </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link href="/analyze">
-              <Button variant="dark" size="lg">
-                {SPLIT_FEATURE_CONTENT.primaryBtn}
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Link href="/analyze">
+                <Button variant="accent" size="lg">
+                  {SPLIT_FEATURE_CONTENT.primaryBtn}
+                </Button>
+              </Link>
+              <Button variant="disabled-gray" size="lg">
+                {SPLIT_FEATURE_CONTENT.disabledBtn}
               </Button>
-            </Link>
-            <Button variant="disabled-gray" size="lg">
-              {SPLIT_FEATURE_CONTENT.disabledBtn}
-            </Button>
-          </div>
-
-          {/* Row of 3 line-icon features with captions */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-[#E6E8E7] w-full">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                <FileUp className="h-5 w-5" />
-              </div>
-              <p className="text-xs sm:text-sm font-semibold text-[#1E2923] leading-snug">
-                {SPLIT_FEATURE_CONTENT.points[0].title}
-              </p>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                <BookOpen className="h-5 w-5" />
+            {/* Row of 3 line-icon features with captions */}
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-[#E6E8E7] w-full">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                  <FileUp className="h-5 w-5" />
+                </div>
+                <p className="text-xs sm:text-sm font-semibold text-[#1E2923] leading-snug">
+                  {SPLIT_FEATURE_CONTENT.points[0].title}
+                </p>
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-[#1E2923] leading-snug">
-                {SPLIT_FEATURE_CONTENT.points[1].title}
-              </p>
-            </div>
 
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                <Copy className="h-5 w-5" />
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                  <BookOpen className="h-5 w-5" />
+                </div>
+                <p className="text-xs sm:text-sm font-semibold text-[#1E2923] leading-snug">
+                  {SPLIT_FEATURE_CONTENT.points[1].title}
+                </p>
               </div>
-              <p className="text-xs sm:text-sm font-semibold text-[#1E2923] leading-snug">
-                {SPLIT_FEATURE_CONTENT.points[2].title}
-              </p>
+
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
+                  <Copy className="h-5 w-5" />
+                </div>
+                <p className="text-xs sm:text-sm font-semibold text-[#1E2923] leading-snug">
+                  {SPLIT_FEATURE_CONTENT.points[2].title}
+                </p>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </Section>

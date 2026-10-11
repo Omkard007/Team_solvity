@@ -30,25 +30,25 @@ export default function Home() {
         {/* 4. Split Feature (tone green) */}
         <SplitFeature />
 
-        {/* 5. Benefits (tone purple) */}
+        {/* 5. Benefits (tone purple - marketing section 1) */}
         <BenefitsGrid />
 
-        {/* 6. Result Manager (tone purple) */}
+        {/* 6. Result Manager (tone green - live results preview) */}
         <ResultManager />
 
-        {/* 7. Key Facts (tone purple) */}
+        {/* 7. Key Facts (tone green) */}
         <KeyFactsSection />
 
-        {/* 8. Torn-edge divider into --section-bg lavender-gray area */}
-        <BrushEdge fillColor="var(--section-bg, #F6F5FB)" />
+        {/* 8. Torn-edge divider into --section-bg gray area */}
+        <BrushEdge fillColor="var(--section-bg, #F6F5FA)" />
 
-        {/* 9. Feature Tabs (purple on --section-bg) */}
+        {/* 9. Feature Tabs (tone purple - marketing section 2) */}
         <FeatureTabs />
 
-        {/* 10. How It Works (purple on --section-bg) */}
+        {/* 10. How It Works (tone green) */}
         <HowItWorks />
 
-        {/* 11. Who It Helps (purple on --section-bg) */}
+        {/* 11. Who It Helps (tone green) */}
         <PersonaCards />
 
         {/* 12. FAQ Accordion (neutral on --section-bg) */}

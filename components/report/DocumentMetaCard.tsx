@@ -2,104 +2,104 @@
 
 import { Landmark, FileText, Calendar, User, FileCheck2, Globe } from "lucide-react";
 import type { DocumentInfo } from "@/types/type";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import type { LegalReport } from "@/lib/types";
+import { SectionCard } from "@/components/ui/SectionCard";
+import { InfoTile } from "@/components/ui/InfoTile";
+import { Stagger } from "@/components/motion/Stagger";
 import { cn } from "@/lib/utils";
 
 export interface DocumentMetaCardProps {
-  info: DocumentInfo;
+  info?: DocumentInfo;
+  identification?: LegalReport["identification"];
   className?: string;
 }
 
-export function DocumentMetaCard({ info, className }: DocumentMetaCardProps) {
+export function DocumentMetaCard({ info, identification, className }: DocumentMetaCardProps) {
+  const ident = identification || {
+    caseTitle: info?.case_title || "",
+    court: info?.court_or_authority || "",
+    caseNumber: info?.case_number || "",
+    date: info?.document_date || "",
+    bench: info?.judge_or_officer || "",
+    documentType: info?.document_type || "",
+    language: info?.language || "English",
+  };
+
   const metaItems = [
     {
-      icon: Landmark,
+      icon: <Landmark className="h-4 w-4" />,
       label: "Court / Authority",
-      value: info.court_or_authority,
+      value: ident.court,
     },
     {
-      icon: FileText,
+      icon: <FileText className="h-4 w-4" />,
       label: "Case Number",
-      value: info.case_number,
+      value: ident.caseNumber,
     },
     {
-      icon: Calendar,
+      icon: <Calendar className="h-4 w-4" />,
       label: "Document Date",
-      value: info.document_date,
+      value: ident.date,
     },
     {
-      icon: User,
+      icon: <User className="h-4 w-4" />,
       label: "Bench / Judge",
-      value: info.judge_or_officer,
+      value: ident.bench,
     },
     {
-      icon: FileCheck2,
+      icon: <FileCheck2 className="h-4 w-4" />,
       label: "Document Type",
-      value: info.document_type,
+      value: ident.documentType,
     },
     {
-      icon: Globe,
+      icon: <Globe className="h-4 w-4" />,
       label: "Language",
-      value: info.language,
+      value: ident.language,
     },
   ].filter((item) => Boolean(item.value));
 
   return (
-    <Card className={cn("overflow-hidden", className)}>
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E6E8E7] bg-[#FAFAFA] px-6 py-4">
-        <div className="flex items-center gap-3">
-          <Badge variant="icon">
-            <Landmark className="h-4 w-4" />
-          </Badge>
-          <div>
-            <h2 className="text-base font-bold text-[#1E2923]">Document Identification</h2>
-            <p className="text-xs text-[#4B5651]">Verified metadata from the official court record</p>
-          </div>
-        </div>
-        {info.document_type && (
-          <span className="rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--accent-ink)]">
-            {info.document_type}
+    <SectionCard
+      icon={<Landmark className="h-6 w-6 text-[var(--accent-ink)]" />}
+      title="Document Identification"
+      subtitle="Extracted from your uploaded document"
+      action={
+        ident.documentType ? (
+          <span className="rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-bold text-[var(--accent-ink)] border border-[var(--summary-border)]">
+            {ident.documentType}
           </span>
-        )}
-      </div>
-
-      <div className="p-6">
-        {info.case_title && (
-          <div className="mb-6 rounded-xl border border-[#E6E8E7] bg-white p-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#4B5651]">
+        ) : null
+      }
+      className={cn("overflow-hidden", className)}
+    >
+      <div className="space-y-6">
+        {ident.caseTitle && (
+          <div className="inner-tile p-5 bg-white border border-[#ECEEED]">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B6661]">
               Case Title / In The Matter Of
             </span>
-            <h1 className="mt-1 text-xl sm:text-2xl font-extrabold text-[#1E2923]">
-              {info.case_title}
+            <h1
+              className="mt-1 text-xl sm:text-2xl font-extrabold text-[#1E2923] tracking-[-0.03em] animate-in fade-in duration-700"
+              style={{
+                clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
+              }}
+            >
+              {ident.caseTitle}
             </h1>
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {metaItems.map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={idx}
-                className="flex items-start gap-3 rounded-xl border border-[#E6E8E7]/80 bg-[#FAFAFA]/70 p-3.5 transition-colors hover:bg-white"
-              >
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent-ink)]">
-                  <Icon className="h-4 w-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <span className="block text-[11px] font-bold uppercase tracking-wider text-[#4B5651]">
-                    {item.label}
-                  </span>
-                  <span className="mt-0.5 block text-sm font-semibold text-[#1E2923] break-words">
-                    {item.value}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <Stagger delayStep={60} maxItems={8} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {metaItems.map((item, idx) => (
+            <InfoTile
+              key={idx}
+              icon={item.icon}
+              label={item.label}
+              value={item.value}
+            />
+          ))}
+        </Stagger>
       </div>
-    </Card>
+    </SectionCard>
   );
 }

@@ -7,6 +7,7 @@ import { Alert } from "@/components/ui/Alert";
 import { StepCard } from "./StepCard";
 import { FileField } from "./FileField";
 import { ResultCard } from "./ResultCard";
+import { ProcessingStepper } from "@/components/report";
 import GoogleTranslate from "@/components/GoogleTranslate";
 import { useSimplify } from "@/hooks/useSimplify";
 import type { Level, SelectedSource } from "@/lib/types";
@@ -34,6 +35,15 @@ export function SimplifyForm() {
   }, [result]);
 
   const canSubmit = Boolean(selectedSource) && !isLoading;
+
+  // Processing state with live stepper
+  if (isLoading) {
+    return (
+      <div className="animate-in fade-in-50 duration-300 py-4">
+        <ProcessingStepper />
+      </div>
+    );
+  }
 
   // Once a result is generated, transition seamlessly to the full Legal Dashboard
   if (result) {

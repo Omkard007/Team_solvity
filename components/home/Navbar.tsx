@@ -4,13 +4,19 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/lib/content";
+import { cn } from "@/lib/utils";
 
-export function Navbar() {
+export interface NavbarProps {
+  variant?: "default" | "compact";
+}
+
+export function Navbar({ variant = "default" }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isCompact = variant === "compact";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#E6E8E7]/80 bg-white/85 backdrop-blur-md transition-colors">
-      <div className="mx-auto flex h-20 max-w-[1180px] items-center justify-between px-6 md:px-8">
+    <header className={cn("sticky top-0 z-50 w-full border-b border-[#E6E8E7]/80 bg-white/85 backdrop-blur-md transition-colors", isCompact && "bg-white/95")}>
+      <div className={cn("mx-auto flex max-w-[1180px] items-center justify-between px-6 md:px-8", isCompact ? "h-16" : "h-20")}>
         {/* Brand wordmark with section symbol § */}
         <Link
           href="/"
@@ -26,29 +32,40 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav
-          aria-label="Primary Navigation"
-          className="hidden md:flex items-center gap-8 text-[13px] font-semibold tracking-[0.08em] text-[#4B5651] uppercase"
-        >
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="transition-colors hover:text-[#1E2923] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm px-1 py-0.5"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center">
-          <Link
-            href="/analyze"
-            className="inline-flex items-center justify-center rounded-xl bg-[var(--accent-soft)] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--accent-ink)] transition-all hover:brightness-95 active:scale-98 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+        {!isCompact && (
+          <nav
+            aria-label="Primary Navigation"
+            className="hidden md:flex items-center gap-8 text-[13px] font-semibold tracking-[0.08em] text-[#4B5651] uppercase"
           >
-            OPEN APP →
-          </Link>
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="transition-colors hover:text-[#1E2923] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm px-1 py-0.5"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        )}
+
+        {/* Desktop CTA / Back */}
+        <div className="hidden md:flex items-center gap-3">
+          {isCompact ? (
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center rounded-full border border-[#ECEEED] bg-white px-4 py-1.5 text-xs font-semibold text-[#5B6661] hover:text-[#1E2923] hover:border-[#D0D4D2] transition-colors"
+            >
+              ← Back to Home
+            </Link>
+          ) : (
+            <Link
+              href="/analyze"
+              className="inline-flex items-center justify-center rounded-xl bg-[var(--accent-soft)] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-[var(--accent-ink)] transition-all hover:brightness-95 active:scale-98 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            >
+              OPEN APP →
+            </Link>
+          )}
         </div>
 
         {/* Mobile Hamburger Button */}

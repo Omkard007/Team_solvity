@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ChangeEvent } from "react";
-import { Upload, FileText, X } from "lucide-react";
+import { Upload, FileText, X, FileUp } from "lucide-react";
 import type { SelectedSource } from "@/lib/types";
 import { MAX_FILE_SIZE_BYTES, MAX_FILE_SIZE_MB, SAMPLE_LABEL } from "@/lib/constants";
 import { formatBytes } from "@/lib/utils";
@@ -54,32 +54,41 @@ export function FileField({
 
   return (
     <div className="w-full">
-      <label htmlFor="pdf-upload" className="sr-only">
-        Upload court document PDF
-      </label>
+      {/* Hidden file input with display:none to eliminate browser tooltips */}
+      <input
+        id="pdf-upload"
+        ref={fileInputRef}
+        type="file"
+        accept="application/pdf"
+        onChange={handleFileChange}
+        className="hidden"
+        style={{ display: "none" }}
+        tabIndex={-1}
+        aria-hidden="true"
+      />
 
       {!selectedSource ? (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <input
-            id="pdf-upload"
-            ref={fileInputRef}
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            aria-describedby={error ? "file-error" : undefined}
-            className="block w-full text-sm text-[#4B5651] rounded-xl border border-[#E6E8E7] p-1.5 focus:outline-none focus:ring-2 focus:ring-[var(--accent)] file:mr-4 file:rounded-lg file:border-0 file:bg-[#F6F5FB] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#1E2923] hover:file:bg-[#ECEAFB] cursor-pointer"
-          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-[#ECEEED] bg-white px-4 py-3 text-sm font-semibold text-[#1E2923] shadow-xs hover:border-[var(--accent)] hover:text-[var(--accent-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] transition-all cursor-pointer"
+          >
+            <FileUp className="h-4 w-4 text-[var(--accent)]" aria-hidden="true" />
+            <span>Select PDF Document</span>
+          </button>
+
           <button
             type="button"
             onClick={onSelectSample}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-dashed border-[var(--accent)] bg-[var(--accent-soft)]/20 px-4 py-2.5 text-sm font-semibold text-[var(--accent-ink)] hover:bg-[var(--accent-soft)]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] transition-colors"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-dashed border-[var(--accent)] bg-[var(--accent-soft)]/20 px-4 py-3 text-sm font-semibold text-[var(--accent-ink)] hover:bg-[var(--accent-soft)]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] transition-colors cursor-pointer"
           >
             <Upload className="h-4 w-4" aria-hidden="true" />
-            <span>Load Sample</span>
+            <span>Load Sample Order</span>
           </button>
         </div>
       ) : (
-        <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E6E8E7] bg-[#FAFAFA] p-3.5">
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-[#ECEEED] bg-[#FAFAFA] p-3.5">
           <div className="flex min-w-0 items-center gap-2.5">
             <FileText className="h-5 w-5 shrink-0 text-[var(--accent)]" aria-hidden="true" />
             <div className="min-w-0 flex-1">
@@ -87,7 +96,7 @@ export function FileField({
                 {selectedSource.type === "file" ? selectedSource.file.name : SAMPLE_LABEL}
               </p>
               {selectedSource.type === "file" && (
-                <p className="text-xs text-[#4B5651]">
+                <p className="text-xs text-[#5B6661]">
                   {formatBytes(selectedSource.file.size)}
                 </p>
               )}
@@ -97,7 +106,7 @@ export function FileField({
             type="button"
             onClick={handleClear}
             aria-label="Remove selected document"
-            className="rounded-lg p-1.5 text-[#4B5651] hover:bg-[#E6E8E7] hover:text-[#1E2923] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] transition-colors"
+            className="rounded-lg p-1.5 text-[#5B6661] hover:bg-[#ECEEED] hover:text-[#1E2923] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
