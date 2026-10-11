@@ -12,7 +12,7 @@ import type { Level, SelectedSource } from "@/lib/types";
 
 export function SimplifyForm() {
   const [selectedSource, setSelectedSource] = useState<SelectedSource>(null);
-  const [level, setLevel] = useState<Level>("simple");
+  const level: Level = "simple";
   const [fileError, setFileError] = useState<string | null>(null);
 
   const { isLoading, error, result, simplify, resetError } = useSimplify();

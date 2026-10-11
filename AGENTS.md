@@ -7,6 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+<<<<<<< HEAD
 
 <!-- BEGIN:nextjs-agent-feedback -->
 
@@ -28,3 +29,5 @@ Keep a qualifying candidate through the reporting pass even if you resolve or wo
 Before the final response, run one reporting pass. If candidates remain, from this file's directory run `node node_modules/next/dist/bin/next internal agent-feedback-instructions` once without piping or truncating its output. Follow its output or error guidance. If a network sandbox blocks it, retry with network access; if it still returns no output, continue normally.
 
 <!-- END:nextjs-agent-feedback -->
+=======
+>>>>>>> 400e29e56c8ee22766cc431c124e5023890ee4a2
