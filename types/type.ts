@@ -63,34 +63,40 @@ export interface ImportantDetail {
     importance: string;
 }
 
+export type LegalLinkType =
+  | "act"
+  | "section"
+  | "judgment"
+  | "court_order"
+  | "official_source"
+  | "other";
+
+export interface LegalLink {
+  title: string;
+  url: string;
+  type: LegalLinkType;
+  description: string;
+  source_name: string | null;
+  section_or_citation: string | null;
+}
+
 export interface NyayaAIOutput {
-    schema_version: "1.0";
+  schema_version: "1.0";
 
-    document_info: DocumentInfo;
-
-    short_summary: string;
-
-    why_this_happened: string;
-
-    what_happened: TimelineEvent[];
-
-    parties: Party[];
-
-    main_issues: string[];
-
-    arguments: LegalArgument[];
-
-    legal_references: LegalReference[];
-
-    decision_or_result: DecisionOrResult;
-
-    next_steps: NextStep[];
-
-    important_details: ImportantDetail[];
-
-    uncertainties: string[];
-
-    disclaimer: string;
+  document_info: DocumentInfo;
+  short_summary: string;
+  why_this_happened: string;
+  what_happened: TimelineEvent[];
+  parties: Party[];
+  main_issues: string[];
+  arguments: LegalArgument[];
+  legal_references: LegalReference[];
+  legal_links: LegalLink[];
+  decision_or_result: DecisionOrResult;
+  next_steps: NextStep[];
+  important_details: ImportantDetail[];
+  uncertainties: string[];
+  disclaimer: string;
 }
 
 /**
